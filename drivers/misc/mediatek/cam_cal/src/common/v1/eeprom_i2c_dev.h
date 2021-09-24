@@ -1,0 +1,28 @@
+/* SPDX-License-Identifier: GPL-2.0 */
+/*
+ * Copyright (c) 2019 MediaTek Inc.
+ */
+#ifndef __EEPROM_I2C_DEV_H
+#define __EEPROM_I2C_DEV_H
+
+#include "kd_camera_feature.h"
+#ifndef OPLUS_FEATURE_CAMERA_COMMON
+//weiriqin@CAMERA.DEV, 2020/06/16, add for p95 otp function
+#define OPLUS_FEATURE_CAMERA_COMMON
+#endif
+enum EEPROM_I2C_DEV_IDX {
+	I2C_DEV_IDX_1 = 0,
+	I2C_DEV_IDX_2,
+	I2C_DEV_IDX_3,
+	#ifdef OPLUS_FEATURE_CAMERA_COMMON
+        //weiriqin@CAMERA.DEV, 2020/06/16, add for p95 otp function
+	I2C_DEV_IDX_4,
+	#endif
+	I2C_DEV_IDX_MAX
+};
+
+extern int gi2c_dev_timing[I2C_DEV_IDX_MAX];
+
+enum EEPROM_I2C_DEV_IDX get_i2c_dev_sel(enum IMGSENSOR_SENSOR_IDX idx);
+
+#endif /* __EEPROM_I2C_DEV_H */

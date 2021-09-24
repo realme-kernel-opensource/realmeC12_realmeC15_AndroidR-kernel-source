@@ -1,0 +1,24 @@
+#
+# oplus extend audio codec configuration
+#
+
+# Jun.Liang@MULTIMEDIA.AUDIODRIVER.SMARTPA, 2020/09/08, add for SIA PA ALGO
+config SIA_PA_ALGO
+	bool "Use SIA PA ALGO"
+	default n
+
+config SND_SOC_AW87339
+	bool "Use AW87339 As PA"
+	default n
+
+#Yongzhi.Zhang@PSW.MM.AudioDriver.Codec, 2019/09/27, add for SIA PA ALGO
+config HSKEY_BLOCK
+	bool "Block hskey for 1s"
+	default n
+
+#sidong.Zhao@WT,2021/3/9, add aw87339 driver
+config SND_SOC_AW87XXX
+	tristate "SoC Audio for awinic AW87XXX Smart K PA"
+	depends on I2C
+	help
+	This option enables support for AW87XXX Smart K PA.
