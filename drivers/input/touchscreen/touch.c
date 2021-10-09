@@ -83,8 +83,31 @@ bool __init tp_judge_ic_match(char *tp_ic_name)
 		}
 		pr_err("[TP] ERROR! ic is not match driver\n");
 		return false;
+	case 20701:
+		pr_info("[TP] tp judge ic forward for 20701\n");
+		if (strstr(tp_ic_name, "nf_nt36525b") && strstr(saved_command_line, "nt36525b")) {
+			return true;
+		}
+		if (strstr(tp_ic_name, "hx83102d_nf") && strstr(saved_command_line, "hx83102d")) {
+			return true;
+		}
+		if (strstr(tp_ic_name, "hx83112a_nf") && strstr(saved_command_line, "hx83112a")) {
+			return true;
+		}
+		if (strstr(tp_ic_name, "focaltech,fts") && strstr(saved_command_line, "ft8006s")) {
+			return true;
+		}
+		if (strstr(tp_ic_name, "ili9882n") && strstr(saved_command_line, "ili9882n")) {
+			return true;
+		}
+		pr_err("[TP] ERROR! ic is not match driver\n");
+		return false;
+    case 20375: //jelly
     case 20376:
     case 20377:
+    case 20378:
+    case 20379:
+    case 131962://2037A
          pr_info("[TP] tp judge ic forward for %d.\n", get_project());
          if (strstr(tp_ic_name, "ili9882n") && strstr(saved_command_line, "ilt7807s")) {
               g_tp_dev_vendor = TP_ILI7807S_HLT;
@@ -295,7 +318,100 @@ int tp_util_get_vendor(struct hw_resource *hw_res, struct panel_info *panel_data
             panel_data->firmware_headfile.firmware_size = sizeof(FW_206A1_NF_ILT9882N_LS);
         }
     }
-    if ((g_tp_prj_id == 20376)||(g_tp_prj_id == 20377)){
+	if (g_tp_prj_id == 20701) {
+		pr_err("[TP]project is 20701\n", __func__);
+		if (strstr(saved_command_line, "nt36525b_hlt_boe")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_NT36525B_NF_90HZ_HLT.bin");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_NT36525B_NF_90HZ_HLT.img");
+
+			strcpy(panel_data->manufacture_info.manufacture, "HLT");
+			memcpy(panel_data->manufacture_info.version, "HLT_NT25_", 9);
+			panel_data->firmware_headfile.firmware_data = FW_NT36525B_NF_90HZ_HLT;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_NT36525B_NF_90HZ_HLT);
+		}
+		if (strstr(saved_command_line, "hx83102d_txd_inx")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_HX83102D_NF_90HZ_TXD.img");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_HX83102D_NF_90HZ_TXD.img");
+
+			strcpy(panel_data->manufacture_info.manufacture, "TXD");
+			memcpy(panel_data->manufacture_info.version, "TXD_HX102D__", 12);
+			panel_data->firmware_headfile.firmware_data = FW_HX83102D_NF_90HZ_TXD;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_HX83102D_NF_90HZ_TXD);
+		}
+                if (strstr(saved_command_line, "hx83102d_truly_truly")) {
+                        snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+                                "tp/20701/FW_HX83102D_NF_90HZ_TRULY.img");
+                        snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+                                "tp/20701/LIMIT_HX83102D_NF_90HZ_TRULY.img");
+
+                        strcpy(panel_data->manufacture_info.manufacture, "TRULY");
+                        memcpy(panel_data->manufacture_info.version, "TRULY_HX102D", 12);
+                        panel_data->firmware_headfile.firmware_data = FW_20701_HX83102D_NF_90HZ_TRULY;
+                        panel_data->firmware_headfile.firmware_size = sizeof(FW_20701_HX83102D_NF_90HZ_TRULY);
+                }
+		if (strstr(saved_command_line, "hx83112a_txd_boe_fives")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_HX83112A_NF_90HZ_TXD.img");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_HX83112A_NF_90HZ_TXD.img");
+
+			strcpy(panel_data->manufacture_info.manufacture, "TXD");
+			memcpy(panel_data->manufacture_info.version, "TXD_HX112A__", 12);
+			panel_data->firmware_headfile.firmware_data = FW_HX83112A_NF_90HZ_TXD;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_HX83112A_NF_90HZ_TXD);
+		}
+		if (strstr(saved_command_line, "ili9882n_truly_truly")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_ILI9882N_NF_90HZ_TRULY.bin");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_ILI9882N_NF_90HZ_TRULY.ini");
+
+			strcpy(panel_data->manufacture_info.manufacture, "TRULY");
+			memcpy(panel_data->manufacture_info.version, "TRULY_ILI2N_", 12);
+			panel_data->firmware_headfile.firmware_data = FW_ILI9882N_NF_90HZ_TRULY;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_ILI9882N_NF_90HZ_TRULY);
+		}
+		if (strstr(saved_command_line, "ili9882n_mn228_txd_inx")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_ILI9882N_NF_MN228_TXD.bin");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_ILI9882N_NF_MN228_TXD.ini");
+
+			strcpy(panel_data->manufacture_info.manufacture, "TXD");
+			memcpy(panel_data->manufacture_info.version, "TXD_MN_ILI2N", 12);
+			panel_data->firmware_headfile.firmware_data = FW_ILI9882N_NF_MN228_TXD;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_ILI9882N_NF_MN228_TXD);
+		}
+		if (strstr(saved_command_line, "ili9882n_txd_inx")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_ILI9882N_NF_90HZ_TXD.bin");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_ILI9882N_NF_90HZ_TXD.ini");
+
+			strcpy(panel_data->manufacture_info.manufacture, "TXD");
+			memcpy(panel_data->manufacture_info.version, "TXD_ILI2N", 9);
+			panel_data->firmware_headfile.firmware_data = FW_ILI9882N_NF_90HZ_TXD;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_ILI9882N_NF_90HZ_TXD);
+		}
+		if (strstr(saved_command_line, "ft8006s_hlt_boe")) {
+			snprintf(panel_data->fw_name, MAX_FW_NAME_LENGTH,
+				"tp/20701/FW_FT8006S_NF_90HZ_HLT.img");
+			snprintf(panel_data->test_limit_name, MAX_LIMIT_DATA_LENGTH,
+				"tp/20701/LIMIT_FT8006S_NF_90HZ_HLT.img");
+
+			strcpy(panel_data->manufacture_info.manufacture, "HLT");
+			memcpy(panel_data->manufacture_info.version, "HLT_FT8006S_", 12);
+			panel_data->firmware_headfile.firmware_data = FW_FT8006S_NF_90HZ_HLT;
+			panel_data->firmware_headfile.firmware_size = sizeof(FW_FT8006S_NF_90HZ_HLT);
+		}
+	}
+        //jelly tp fw path init
+    if ((g_tp_prj_id == 20375)||(g_tp_prj_id == 20376)||(g_tp_prj_id == 20377)
+        ||(g_tp_prj_id == 20378)||(g_tp_prj_id == 20379)||(g_tp_prj_id == 131962 /*2037A*/)){
 
         pr_err("[TP]project is %d\n", __func__, g_tp_prj_id);
        if (strstr(saved_command_line, "ilt7807s_hlt")) {

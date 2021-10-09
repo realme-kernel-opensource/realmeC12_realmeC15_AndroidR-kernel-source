@@ -2417,8 +2417,12 @@ static int mtkfb_probe(struct platform_device *pdev)
 #ifdef OPLUS_BUG_STABILITY
 /*hanshaocong@ODM_WT.MM.Display.LCD.Params,2021/03/05 add for jelly lcm*/
 	switch (get_project()) {
+		case 20375: //jelly
 		case 20376:
 		case 20377:
+		case 20378:
+		case 20379:
+		case 131962://2037A
 			backlight_twelve_bit_flag = 1;
 			break;
 		default:

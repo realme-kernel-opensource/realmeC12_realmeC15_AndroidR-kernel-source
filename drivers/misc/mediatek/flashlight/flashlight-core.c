@@ -380,7 +380,9 @@ int flashlight_dev_register(
 	} else if (get_Operator_Version() >= 177 || get_Operator_Version() <= 184) {
 		flashlight_id = flashlight_id_riod;
 		flashlight_device_num = 1;
-	} else if (is_project(20376) || is_project(20377)) {
+	} else if (is_project(20375) || is_project(20376)
+		|| is_project(20377) || is_project(20378)
+		|| is_project(20379) || is_project(0x2037A)) {
 		flashlight_id = flashlight_id_parkera;
 		flashlight_device_num = 1;
 	}

@@ -1568,40 +1568,91 @@ static int backlight_remapping_into_tddic_reg(struct disp_lcm_handle *plcm, int 
 	struct LCM_PARAMS *lcm_params = NULL;
 	lcm_params = plcm->params;
 	level = level_brightness;
-	if ( level > 0) {
-
-	if (lcm_params->blmap){
-		if (level%32 > 0)
-			level_temp = level/32 + 1;
-		else
-			level_temp = level/32;
-
-		level_temp = level_temp - 1;
-		if((level_temp*2 + 1) > lcm_params->blmap_size){
-			DISPERR(" %s android brightness level is more than 2047 or LCM blmap_size is setting short than 128 = %d\n", __func__, lcm_params->blmap_size);
+	if ((is_project(20701))) {
+		if (level > 0) {
+			pr_debug("%s level %d \n", __func__, level);
+			if (level >= lcm_params->brightness_max) {
+				level = lcm_params->brightness_max;
+				return level;
+			} else if(level < 2048) {
+				if (lcm_params->blmap) {
+					if (level%32 > 0)
+						level_temp = level/32 + 1;
+					else
+						level_temp = level/32;
+						level_temp = level_temp - 1;
+					if((level_temp*2 + 1) > lcm_params->blmap_size){
+						DISPERR(" %s android brightness level is more than 2047 or LCM blmap_size is setting short than 128 = %d\n", __func__, lcm_params->blmap_size);
+						return 0;
+					}
+					value_a = lcm_params->blmap[level_temp*2];
+					value_b = lcm_params->blmap[level_temp*2 + 1];
+					if (level <= 384)
+						level = value_a*level/100 + value_b;
+					else
+						level = value_a*level/100 - value_b;
+						pr_debug(" %s value_a %d   value_b %d level_temp %d level %d\n", __func__, value_a, value_b, level_temp, level);
+					if (level < 0){
+						DISPERR(" %s backlight value had been converted into a minus type = %d\n", __func__, level);
+						return 0;
+					}
+				}
+				if (level < lcm_params->brightness_min)
+					level = lcm_params->brightness_min;
+				if (level > 3767)
+					level = 3767;
+					return level;
+			}else {
+				level = 16*level/100 + 3440;
+				if (level < 3767)
+					level = 3767;
+				if (level > lcm_params->brightness_max)
+					level = lcm_params->brightness_max;
+				return level;
+			}
+		}else if (level == 0) {
 			return 0;
-		}
-		value_a = lcm_params->blmap[level_temp*2];
-		value_b = lcm_params->blmap[level_temp*2 + 1];
-		if (level <= 383)
-			level = value_a*level/100 + value_b;
-		else
-			level = value_a*level/100 - value_b;
-		if (level < 0){
-			DISPERR(" %s backlight value had been converted into a minus type = %d\n", __func__, level);
+		}else {
+			DISPERR(" %s android brightness level is error = %d\n", __func__, level);
 			return 0;
 		}
 	}
-	if (level < lcm_params->brightness_min)
-		level = lcm_params->brightness_min;
-	if (level > lcm_params->brightness_max)
-		level = lcm_params->brightness_max;
-	return level;
-	} else if (level == 0) {
-		return 0;
-	} else {
-		DISPERR(" %s android brightness level is error = %d\n", __func__, level);
-		return 0;
+	else {
+		if ( level > 0) {
+
+		if (lcm_params->blmap){
+			if (level%32 > 0)
+				level_temp = level/32 + 1;
+			else
+				level_temp = level/32;
+
+			level_temp = level_temp - 1;
+			if((level_temp*2 + 1) > lcm_params->blmap_size){
+				DISPERR(" %s android brightness level is more than 2047 or LCM blmap_size is setting short than 128 = %d\n", __func__, lcm_params->blmap_size);
+				return 0;
+			}
+			value_a = lcm_params->blmap[level_temp*2];
+			value_b = lcm_params->blmap[level_temp*2 + 1];
+			if (level <= 383)
+				level = value_a*level/100 + value_b;
+			else
+				level = value_a*level/100 - value_b;
+			if (level < 0){
+				DISPERR(" %s backlight value had been converted into a minus type = %d\n", __func__, level);
+				return 0;
+			}
+		}
+		if (level < lcm_params->brightness_min)
+			level = lcm_params->brightness_min;
+		if (level > lcm_params->brightness_max)
+			level = lcm_params->brightness_max;
+		return level;
+		} else if (level == 0) {
+			return 0;
+		} else {
+			DISPERR(" %s android brightness level is error = %d\n", __func__, level);
+			return 0;
+		}
 	}
 }
 //#endif

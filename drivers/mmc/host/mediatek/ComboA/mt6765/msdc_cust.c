@@ -299,7 +299,8 @@ void msdc_sd_power(struct msdc_host *host, u32 on)
 			card_on = 1;
 		//guanghui.ge@ODM_WT.BSP.Storage.sdcard, 2021/03/13, enable sdcard for parker-a
 		project_id = get_project();
-		if (project_id == 20376 || project_id == 20377) {
+		if (project_id == 20375 || project_id == 20376 || project_id == 20377 ||
+			project_id == 20378 || project_id == 20379 || project_id == 0x2037A || project_id == 20701) {
 			/* Disable VMCH OC */
 			if (!card_on)
 				devm_regulator_unregister_notifier(
@@ -1283,7 +1284,8 @@ int msdc_of_parse(struct platform_device *pdev, struct mmc_host *mmc)
 
 	//guanghui.ge@ODM_WT.BSP.Storage.sdcard, 2021/03/13, enable sdcard for parker-a
 	project_id = get_project();
-	if (project_id != 20376 && project_id != 20377) {
+	if (project_id != 20375 && project_id != 20376 && project_id != 20377 &&
+		project_id != 20378 && project_id != 20379 && project_id != 0x2037A && project_id != 20701) {
 		cd_ldo_gpio = of_get_named_gpio(np, "cd-ldo-gpio", 0);
 		pr_notice("[msdc%d] found in cd-ldo-gpio %d \n", host->id, cd_ldo_gpio);
 		gpio_direction_output(cd_ldo_gpio, 0);
@@ -1337,7 +1339,8 @@ int msdc_of_parse(struct platform_device *pdev, struct mmc_host *mmc)
 	kfree_const(dup_name);
 
 	//guanghui.ge@ODM_WT.BSP.Storage.sdcard, 2021/03/13, enable sdcard for parker-a
-	if (project_id == 20376 || project_id == 20377) {
+	if (project_id == 20375 || project_id == 20376 || project_id == 20377 ||
+		project_id == 20378 || project_id == 20379 || project_id == 0x2037A || project_id == 20701) {
 		if (host->id == 1) {
 			sd_oc.nb.notifier_call = msdc_sd_event;
 			INIT_WORK(&sd_oc.work, sdcard_oc_handler);

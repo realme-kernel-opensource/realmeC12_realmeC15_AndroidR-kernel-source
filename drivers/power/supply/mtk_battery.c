@@ -117,7 +117,9 @@ int battery_type_check(int *battery_type)
 	bm_debug("[battery_value= %d\n", value);
 
 	if(is_fuelgauge_apply() == true){
-		if (!(is_project(20376) || is_project(20377))) {
+		if (!(is_project(20375) || is_project(20376)
+			|| is_project(20377) || is_project(20378)
+			|| is_project(20379) || is_project(0x2037A))) {
 			if (value >= 790 && value <= 1100) {
 				*battery_type = BAT_TYPE__ATL_4400mV;
 				battery_id = 0;
@@ -129,6 +131,10 @@ int battery_type_check(int *battery_type)
 			} else if (value >= 550 && value < 790) {
 				*battery_type = BAT_TYPE__ATL_4450mV;
 				battery_id = 2;
+				if (is_project(20701)) {
+					battery_id = 4;
+				}
+
 			} else if (value >= 1040 && value <= 1325) {
 				*battery_type = BAT_TYPE__SDI_4450mV;
 				battery_id = 3;
@@ -245,7 +251,9 @@ bool meter_fg_30_get_battery_authenticate(void)
 	battery_id = fgauge_get_profile_id();
 	if(battery_id >= 2) {
 		return battery_type_is_4450mv();
-	} else if (is_project(20376) || is_project(20377)) {
+	} else if (is_project(20375) || is_project(20376)
+			|| is_project(20377) || is_project(20378)
+			|| is_project(20379) || is_project(0x2037A)) {
 		return battery_type_is_4450mv();
 	} else
 #endif
@@ -1919,7 +1927,9 @@ void fg_custom_init_from_header(struct mtk_battery *gm)
 		gm->rbat.rbat_pull_up_r = RBAT_PULL_UP_R;
 	}
 
-	if (is_project(20376) || is_project(20377)) {
+	if (is_project(20375) || is_project(20376)
+			|| is_project(20377) || is_project(20378)
+			|| is_project(20379) || is_project(0x2037A)) {
 		gm->rbat.rbat_pull_up_r = RBAT_PULL_UP_R_PARKER_A;
 		bm_err("%s Get rbat_pull_up_r\n", __func__);
 	}
@@ -2445,7 +2455,9 @@ void fg_custom_init_from_dts(struct platform_device *dev,
 
 	/* battery temperature  related*/
 	fg_read_dts_val(np, "RBAT_PULL_UP_R", &(gm->rbat.rbat_pull_up_r), 1);
-	if (is_project(20376) || is_project(20377)) {
+	if (is_project(20375) || is_project(20376)
+			|| is_project(20377) || is_project(20378)
+			|| is_project(20379) || is_project(0x2037A)) {
 		gm->rbat.rbat_pull_up_r = RBAT_PULL_UP_R_PARKER_A;
 		bm_err("%s Get rbat_pull_up_r\n", __func__);
 	}

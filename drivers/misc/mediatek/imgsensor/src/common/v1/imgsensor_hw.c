@@ -56,6 +56,8 @@ enum IMGSENSOR_RETURN imgsensor_hw_init(struct IMGSENSOR_HW *phw)
 		pcust_pwr_cfg = imgsensor_custom_config_pascale;
 	} else if (pascal_project() == PARKERA_PROJECT) {
 		pcust_pwr_cfg = imgsensor_custom_config_parkera;
+	} else if (pascal_project() == 5) {
+		pcust_pwr_cfg = imgsensor_custom_config_20701_D;
 	} else {
 		pcust_pwr_cfg = imgsensor_custom_config;
 	}
@@ -221,12 +223,16 @@ enum IMGSENSOR_RETURN imgsensor_hw_power(
 	    platform_power_sequence,
 	    str_index);
 #ifdef OPLUS_FEATURE_CAMERA_COMMON
+if (pascal_project() == 5) {
+	imgsensor_hw_power_sequence(phw, sensor_idx, pwr_status, sensor_power_sequence_20701_D, curr_sensor_name);
+} else {
 	imgsensor_hw_power_sequence(
 	    phw,
 	    sensor_idx,
 	    pwr_status,
 	    sensor_power_sequence,
 	    curr_sensor_name);
+}
 #else
 	imgsensor_hw_power_sequence(
 	    phw,

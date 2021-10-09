@@ -616,6 +616,10 @@ void imgsensor_get_seriano(MINT8 *seriano, MINT32 drv_idx, struct IMGSENSOR_SENS
 	}else if(pascal_project() == PARKERA_PROJECT) {
 		imgsensor_i2c_init(&psensor_inst->i2c_cfg,
 			imgsensor_custom_config_parkera[psensor->inst.sensor_idx].i2c_dev);
+	} else if (pascal_project() == 5) {
+		pSensorList = kdSensorList_rioD;
+		imgsensor_i2c_init(&psensor_inst->i2c_cfg,
+			imgsensor_custom_config_20701_D[psensor->inst.sensor_idx].i2c_dev);
 	}else {
 		imgsensor_i2c_init(&psensor_inst->i2c_cfg,
 			imgsensor_custom_config[psensor->inst.sensor_idx].i2c_dev);
@@ -673,6 +677,10 @@ int imgsensor_set_driver(struct IMGSENSOR_SENSOR *psensor)
 	}else if(pascal_project() == PARKERA_PROJECT) {
 	    imgsensor_i2c_init(&psensor_inst->i2c_cfg,
 	        imgsensor_custom_config_parkera[psensor->inst.sensor_idx].i2c_dev);
+	} else if (pascal_project() == 5) {
+		pSensorList = kdSensorList_rioD;
+		imgsensor_i2c_init(&psensor_inst->i2c_cfg,
+			imgsensor_custom_config_20701_D[psensor->inst.sensor_idx].i2c_dev);
 	}else {
 	    imgsensor_i2c_init(&psensor_inst->i2c_cfg,
 	        imgsensor_custom_config[psensor->inst.sensor_idx].i2c_dev);
