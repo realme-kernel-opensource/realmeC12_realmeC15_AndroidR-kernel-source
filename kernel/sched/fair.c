@@ -8416,6 +8416,8 @@ static void detach_task(struct task_struct *p, struct lb_env *env)
 #if defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT)
 	lockdep_off();
 	double_lock_balance(env->src_rq, env->dst_rq);
+	if (!(env->src_rq->clock_update_flags & RQCF_UPDATED))
+		update_rq_clock(env->src_rq);
 #endif /* defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT) */
 	set_task_cpu(p, env->dst_cpu);
 #if defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT)

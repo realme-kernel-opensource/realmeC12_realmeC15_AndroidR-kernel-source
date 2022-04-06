@@ -1568,6 +1568,8 @@ static struct rq *move_queued_task(struct rq *rq, struct rq_flags *rf,
 #if defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT)
 	rq_unpin_lock(rq, rf);
 	double_lock_balance(rq, cpu_rq(new_cpu));
+	if (!(rq->clock_update_flags & RQCF_UPDATED))
+		update_rq_clock(rq);
 #endif /* defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT) */
 	set_task_cpu(p, new_cpu);
 #if defined(OPLUS_FEATURE_UIFIRST) && defined(CONFIG_SCHED_WALT)
